@@ -1,0 +1,38 @@
+name: Documentation
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  CPM_SOURCE_CACHE: ${{ github.workspace }}/cpm_modules
+
+jobs:
+  build:
+    name: Build and publish documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: https://github.com/Arniiiii/checkout_path_fix@main
+
+      # - uses: actions/cache@v3
+      #   with:
+      #     path: "**/cpm_modules"
+      #     key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
+
+      - name: Install dependencies
+        run: |
+          apt update
+          apt install doxygen cmake ninja-build -y
+          pip install jinja2 Pygments
+
+      - name: Build
+        run: |
+          cmake -Sdocumentation -Bbuild
+          cmake --build build --target GenerateDocs
+
+      - name: Publish
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/doxygen/html

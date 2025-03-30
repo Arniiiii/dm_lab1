@@ -1,0 +1,47 @@
+name: Ubuntu
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+env:
+  CTEST_OUTPUT_ON_FAILURE: 1
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  CPM_SOURCE_CACHE: ${{ github.workspace }}/cpm_modules
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: https://github.com/Arniiiii/checkout_path_fix@main
+
+      # - uses: actions/cache@v3
+      #   with:
+      #     path: "**/cpm_modules"
+      #     key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
+      
+      - name: install cmake and a compiler
+        run: |
+          apt update
+          apt install cmake gcc g++ ninja-build -y
+
+      - name: configure
+        run: cmake -Stest -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCPM_USE_LOCAL_PACKAGES=1 --log-level=DEBUG -DFETCHCONTENT_QUIET=OFF # -DENABLE_TEST_COVERAGE=1
+
+      - name: build
+        run: cmake --build build -j$(nproc) --verbose
+
+      - name: test
+        run: |
+          cd build
+          ctest --build-config Debug -j$(nproc)
+
+      # - name: collect code coverage
+      #   run: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"

@@ -1,0 +1,13 @@
+---
+# Checks: '*,-fuchsia-*,-google-*,-zircon-*,-abseil-*,-modernize-use-trailing-return-type,-llvm-*,-llvmlibc-*'
+# Checks: '-abseil-*,altera-*,android-*,boost-*,bugprone-*,cert-*,concurrency-*,cppcoreguidelines-*,darwin-*,-fuchsia-*,-google-*,-hicpp-*,linuxkernel-*,-llvm*,-llvmlibc-*,misc-*,-modernize-use-trailing-return-type,modernize-*,mpi-*,objc-*,openmp-*,performance-*,portability-*,readibility-*,-zircon-*'
+# Checks: '-abseil-*,-altera-*,android-*,boost-*,bugprone-*,cert-*,concurrency-*,cppcoreguidelines-*,darwin-*,-fuchsia-*,-google-*,-hicpp-*,linuxkernel-*,-llvm*,-llvmlibc-*,misc-*,-modernize-use-trailing-return-type,modernize-*,mpi-*,objc-*,openmp-*,performance-*,portability-*,readibility-*,-zircon-*'
+# Checks: '-abseil-*,-altera-*,-android-*,boost-*,bugprone-*,cert-*,concurrency-*,cppcoreguidelines-*,darwin-*,-fuchsia-*,-google-*,-hicpp-*,linuxkernel-*,-llvm*,-llvmlibc-*,misc-*,-modernize-use-trailing-return-type,modernize-*,mpi-*,objc-*,openmp-*,performance-*,portability-*,readibility-*,-zircon-*'
+# IT WORKS: Checks: '-abseil-*,-altera-*,-android-*,-boost-*,bugprone-*,cert-*,concurrency-*,cppcoreguidelines-*,darwin-*,-fuchsia-*,-google-*,-hicpp-*,linuxkernel-*,-llvm*,-llvmlibc-*,misc-*,-modernize-use-trailing-return-type,modernize-*,mpi-*,objc-*,openmp-*,performance-*,portability-*,readibility-*,-zircon-*'
+# IT does NOT work : Checks: '-abseil-*,-altera-*,-android-*,-boost-use-to-string,boost-use-ranges,bugprone-*,cert-*,concurrency-*,cppcoreguidelines-*,darwin-*,-fuchsia-*,-google-*,-hicpp-*,linuxkernel-*,-llvm*,-llvmlibc-*,misc-*,-modernize-use-trailing-return-type,modernize-*,mpi-*,objc-*,openmp-*,performance-*,portability-*,readibility-*,-zircon-*'
+# Checks: '-abseil-*,-altera-*,-android-*,boost-use-to-string,-boost-use-ranges,bugprone-*,cert-*,concurrency-*,cppcoreguidelines-*,darwin-*,-fuchsia-*,-google-*,-hicpp-*,linuxkernel-*,-llvm*,-llvmlibc-*,misc-*,-modernize-use-trailing-return-type,modernize-*,mpi-*,objc-*,openmp-*,performance-*,portability-*,readibility-*,-zircon-*'
+Checks: '*,-boost-use-ranges,-modernize-use-trailing-return-type,-llvmlibc-*,-fuchsia-*,fuchsia-multiple-inheritance'
+CheckOptions: [{ key: misc-non-private-member-variables-in-classes, value: IgnoreClassesWithAllMemberVariablesBeingPublic }]
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle: file
