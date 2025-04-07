@@ -77,6 +77,10 @@ set(TRY_BOOST_VERSION "1.85.0")
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/packages/add_boost.cmake)
 
+include(./cmake/packages/add_fmt.cmake)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+
 include(./cmake/packages/add_certify.cmake)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC certify::certify)

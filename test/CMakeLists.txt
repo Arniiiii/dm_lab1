@@ -14,11 +14,11 @@ include(../cmake/tools.cmake)
 # ---- Dependencies ----
 
 include(../cmake/getCPM.cmake)
-set(CPM_DOWNLOAD_ALL ON)
+# set(CPM_DOWNLOAD_ALL ON)
 # CPMAddPackage( NAME doctest GITHUB_REPOSITORY "doctest/doctest" VERSION "2.4.9" )
 include(../cmake/packages/add_googletest.cmake)
 
-find_package(Format.cmake 1.8.3 REQUIRED)
+# find_package(Format.cmake 1.8.3 REQUIRED)
 
 # ---- Create binary ----
 
@@ -34,7 +34,7 @@ foreach(source ${sources})
   string(REPLACE "/" "_" name ${name})
   add_executable(${PROJECT_NAME}_test_${name} ${CMAKE_CURRENT_SOURCE_DIR}/source/${source})
   target_link_libraries(${PROJECT_NAME}_test_${name} PRIVATE DataMiningLab1::DataMiningLab1)
-  target_link_libraries(${PROJECT_NAME}_test_${name} PRIVATE gtest_main)
+  # target_link_libraries(${PROJECT_NAME}_test_${name} PRIVATE gtest_main)
   set_target_properties(${PROJECT_NAME}_test_${name} PROPERTIES CXX_STANDARD 23)
   add_test(NAME ${PROJECT_NAME}_test_${name} COMMAND ${PROJECT_NAME}_test_${name})
 endforeach()
