@@ -1,10 +1,11 @@
 #pragma once
 
 #include <array>
+#include <type_traits>
 enum class test_result_enum : bool
 {
-  success = 0,
-  failure = 1,
+  success = false,
+  failure = true,
 };
 
 struct test_sample
@@ -12,12 +13,15 @@ struct test_sample
   std::array<int, 4> value{};
   int result;
 
-  [[nodiscard]] constexpr inline const auto& getValue() const { return value; }
-  [[nodiscard]] constexpr inline const auto& getExpectedResult() const
+  [[nodiscard]] constexpr const auto& getValue() const { return value; }
+  [[nodiscard]] constexpr const auto& getExpectedResult() const
   {
     return result;
   }
 };
+
+// jff
+static_assert(std::is_standard_layout_v<test_sample>, "It's not POD ?");
 
 constexpr auto data = std::to_array<test_sample>({
     {.value = {{0, 0, 1, 0}}, .result = 0},
