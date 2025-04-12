@@ -7,12 +7,10 @@
 #include <cstddef>
 #include <iterator>
 #include <map>
+#include <print>
 #include <ranges>
 #include <vector>
 #include <type_traits>
-
-#include <fmt/base.h>
-#include <fmt/ranges.h>
 
 #include "datamining_lab1/common.hpp"
 
@@ -133,11 +131,11 @@ namespace datamining_lab1::one_rule
           {
             for (const auto& [column_key, count] : row_map)
               {
-                fmt::print("{} ", count);
+                std::print("{} ", count);
               }
-            fmt::println("");
+            std::println("");
           }
-        fmt::println("");
+        std::println("");
       }
 
     std::vector<std::size_t> error_of_table(amount_of_parameters, 0);
@@ -166,7 +164,7 @@ namespace datamining_lab1::one_rule
         error_of_table.cbegin(),
         std::min_element(error_of_table.cbegin(), error_of_table.cend()));
 
-    fmt::println(
+    std::println(
         "error_of_table: {} , best_table_index: {} , amount_of_parameters {}",
         error_of_table, best_table_index, amount_of_parameters);
 

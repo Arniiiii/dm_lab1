@@ -12,7 +12,7 @@ namespace
     auto model = datamining_lab1::one_rule::create_model(data);
     auto main_table = model.getPosition();
     auto result = model.predict(std::to_array<int>({2, 1, 1, 1}));
-    fmt::println("{}", main_table);
+    std::println("{}", main_table);
     return result == 0 && main_table == 3 ? test_result_enum::success
                                           : test_result_enum::failure;
   }

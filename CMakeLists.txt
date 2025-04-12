@@ -76,27 +76,27 @@ set(TRY_BOOST_VERSION "1.85.0")
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/packages/add_boost.cmake)
 
-include(./cmake/packages/add_fmt.cmake)
+# include(./cmake/packages/add_fmt.cmake)
+#
+# target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+# include(./cmake/packages/add_certify.cmake)
+#
+# target_link_libraries(${PROJECT_NAME} PUBLIC certify::certify)
 
-include(./cmake/packages/add_certify.cmake)
+# include(./cmake/packages/add_openssl.cmake)
+#
+# target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::SSL)
+# target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto)
+# target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::applink)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC certify::certify)
+# include(./cmake/packages/add_simdjson.cmake)
+#
+# target_link_libraries(${PROJECT_NAME} PUBLIC simdjson::simdjson)
 
-include(./cmake/packages/add_openssl.cmake)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::SSL)
-target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto)
-target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::applink)
-
-include(./cmake/packages/add_simdjson.cmake)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC simdjson::simdjson)
-
-include(./cmake/packages/add_constexpr-to-string.cmake)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC constexpr-to-string::constexpr-to-string)
+# include(./cmake/packages/add_constexpr-to-string.cmake)
+#
+# target_link_libraries(${PROJECT_NAME} PUBLIC constexpr-to-string::constexpr-to-string)
 
 # ---- Stupid customizations ----
 

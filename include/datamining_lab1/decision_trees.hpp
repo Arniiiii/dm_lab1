@@ -17,8 +17,6 @@
 #include <vector>
 #include <type_traits>
 
-#include <fmt/base.h>
-
 #include "boost/dynamic_bitset.hpp"
 #include "datamining_lab1/common.hpp"
 
@@ -488,11 +486,11 @@ namespace datamining_lab1::decision_trees
           {
             for (const auto& [column_key, count] : row_map)
               {
-                fmt::print("{} ", count);
+                std::print("{} ", count);
               }
-            fmt::println("");
+            std::println("");
           }
-        fmt::println("");
+        std::println("");
       }
 
     boost::dynamic_bitset<> bitmask_samples(a_range.size());

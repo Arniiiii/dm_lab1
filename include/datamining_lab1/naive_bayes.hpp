@@ -5,11 +5,10 @@
 #include <cstddef>
 #include <format>
 #include <map>
+#include <print>
 #include <ranges>
 #include <stdexcept>
 #include <vector>
-
-#include <fmt/base.h>
 
 #include "datamining_lab1/common.hpp"
 
@@ -57,7 +56,7 @@ namespace datamining_lab1::naive_bayes
                                              .at(value_collection[i])
                                              .at(possible_result);
             }
-          fmt::println("prediction: possibility of {} is {}", possible_result,
+          std::println("prediction: possibility of {} is {}", possible_result,
                        result[possible_result]);
         }
       std::pair<result_type, float_type> prediction = *std::ranges::max_element(
@@ -149,11 +148,11 @@ namespace datamining_lab1::naive_bayes
           {
             for (const auto& [column_key, count] : row_map)
               {
-                fmt::print("{} ", count);
+                std::print("{} ", count);
               }
-            fmt::println("");
+            std::println("");
           }
-        fmt::println("");
+        std::println("");
       }
 
     std::vector<std::map<underneeth_data_type,
@@ -237,11 +236,11 @@ namespace datamining_lab1::naive_bayes
           {
             for (const auto& [column_key, count] : row_map)
               {
-                fmt::print("{} ", count);
+                std::print("{} ", count);
               }
-            fmt::println("");
+            std::println("");
           }
-        fmt::println("");
+        std::println("");
       }
 
     return model(std::move(tables_likelihoods_), std::move(main_probability_));
