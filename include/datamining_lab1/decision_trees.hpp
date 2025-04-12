@@ -21,7 +21,6 @@
 
 #include "boost/dynamic_bitset.hpp"
 #include "datamining_lab1/common.hpp"
-#include <boost/dynamic_bitset/dynamic_bitset.hpp>
 
 namespace datamining_lab1::decision_trees
 {
@@ -124,10 +123,8 @@ namespace datamining_lab1::decision_trees
   }
 
   template <std::ranges::bidirectional_range RangeT>
-  double informational_entropy(
-      RangeT const& samples,
-      boost::dynamic_bitset<> const&
-          bitmask_samples /*, std::vector<bool> const& bitmask_params */)
+  double informational_entropy(RangeT const& samples,
+                               boost::dynamic_bitset<> const& bitmask_samples)
   {
     using underneeth_sample_type
         = std::iter_value_t<std::ranges::iterator_t<RangeT>>;
@@ -290,9 +287,9 @@ namespace datamining_lab1::decision_trees
           index = bitmask_samples.find_next(index);
         }
     }
-        std::println("is case 1 ?: {} , size: {} count_first: {}",
-                     *all_uniqueS.cbegin(), all_uniqueS.size(),
-                     all_uniqueS.count(*all_uniqueS.cbegin()));
+    std::println("is case 1 ?: {} , size: {} count_first: {}",
+                 *all_uniqueS.cbegin(), all_uniqueS.size(),
+                 all_uniqueS.count(*all_uniqueS.cbegin()));
 
     if (all_uniqueS.size() == all_uniqueS.count(*all_uniqueS.cbegin()))
       {
@@ -308,13 +305,6 @@ namespace datamining_lab1::decision_trees
 
     // case 2
 
-    // bool there_is_a_not_masked_param = false;
-    // for (const auto bit_mask : bitmask_params)
-    //   {
-    //     there_is_a_not_masked_param |= bit_mask;
-    //   }
-
-    // if (not there_is_a_not_masked_param)
     {
       std::size_t index = bitmask_params.find_first();
       if (index == boost::dynamic_bitset<>::npos)

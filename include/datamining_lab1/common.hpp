@@ -3,7 +3,8 @@
 
 #include <ranges>
 #include <type_traits>
-namespace datamining_lab1 {
+namespace datamining_lab1
+{
   template <typename T>
   concept is_void_type = std::is_void_v<T>;
 
@@ -25,6 +26,6 @@ namespace datamining_lab1 {
     { an_object.predict(something) } -> std::same_as<V>;
   };
 
-}
+}  // namespace datamining_lab1
 
-#endif // !INCLUDE_DATAMINING_LAB1_COMMON_HPP
+#endif  // !INCLUDE_DATAMINING_LAB1_COMMON_HPP

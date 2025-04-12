@@ -15,7 +15,6 @@ option(ENABLE_LTO_OPTIMIZATION "yes/no . Graphite for GCC and Polly for Clang" Y
 option(${PROJECT_NAME}_BUILD_STANDALONE "yes/no . Build standalone app?" YES)
 option(${PROJECT_NAME}_BUILD_DOCS "yes/no . Build docs?" NO) # I didn't do them
 
-
 if(${BUILD_SHARED_LIBS})
   # https://stackoverflow.com/questions/33062728/cmake-link-shared-library-on-windows
   if(WIN32)
@@ -141,9 +140,9 @@ if(${${PROJECT_NAME}_BUILD_STANDALONE})
 endif()
 
 if(BUILD_TESTING)
+  enable_testing()
   add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
 endif()
-
 
 if(${${PROJECT_NAME}_BUILD_DOCS})
   add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/documentation)
