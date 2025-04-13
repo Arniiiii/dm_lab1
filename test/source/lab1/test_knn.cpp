@@ -1,7 +1,9 @@
 #include <array>
 #include <exception>
 #include <iostream>
-#include <print>
+
+#include "fmt/base.h"
+#include "fmt/ostream.h"
 
 #include "datamining_lab1/knn.hpp"
 #include "datamining_lab1/test/common.hpp"
@@ -28,6 +30,6 @@ int main(int /*argc*/, char* /*argv*/[])
     }
   catch (std::exception& e)
     {
-      std::println(std::cerr, "Main, got exception: {}", e.what());
+      fmt::println(std::cerr, "Main, got exception: {}", e.what());
     }
 }

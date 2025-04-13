@@ -9,12 +9,13 @@
 #include <map>
 #include <memory>
 #include <numeric>
-#include <print>
 #include <ranges>
 #include <set>
 #include <stdexcept>
 #include <vector>
 #include <type_traits>
+
+#include "fmt/base.h"
 
 #include "boost/dynamic_bitset/dynamic_bitset.hpp"
 #include "datamining_lab1/common.hpp"
@@ -49,8 +50,11 @@ namespace datamining_lab1::decision_trees
     ~JustResult() = default;
 
     explicit JustResult(ResultType result_arg) : result(result_arg) {};
-    ResultType predict(SampleT const& /*unused*/) noexcept override { return result; }
-    void print() noexcept override { std::print("res {} ", result); }
+    ResultType predict(SampleT const& /*unused*/) noexcept override
+    {
+      return result;
+    }
+    void print() noexcept override { fmt::print("res {} ", result); }
   };
 
   template <std::ranges::bidirectional_range SampleT, typename ResultType>
@@ -76,16 +80,16 @@ namespace datamining_lab1::decision_trees
                       a_tree_map,
                   std::size_t a_position)
         : tree(std::move(a_tree_map)), position(a_position) {};
-    ResultType predict(SampleT const& sample) noexcept override 
+    ResultType predict(SampleT const& sample) noexcept override
     {
       return tree.at(sample.at(position))->predict(sample);
     }
     void print() noexcept override
     {
-      std::print("tree param index: {} ", position);
+      fmt::print("tree param index: {} ", position);
       for (auto const& [key, val] : tree)
         {
-          std::print("param_index {} key_val {} ", position, key);
+          fmt::print("param_index {} key_val {} ", position, key);
           val->print();
         }
     }
@@ -120,8 +124,9 @@ namespace datamining_lab1::decision_trees
   }
 
   template <std::ranges::bidirectional_range RangeT>
-  double informational_entropy(RangeT const& samples,
-                               boost::dynamic_bitset<> const& bitmask_samples) noexcept
+  double informational_entropy(
+      RangeT const& samples,
+      boost::dynamic_bitset<> const& bitmask_samples) noexcept
   {
     using underneeth_sample_type
         = std::iter_value_t<std::ranges::iterator_t<RangeT>>;
@@ -150,9 +155,9 @@ namespace datamining_lab1::decision_trees
   };
 
   template <std::ranges::bidirectional_range RangeT>
-  auto informational_criteria(RangeT const& samples,
-                              boost::dynamic_bitset<> const& bitmask_samples,
-                              boost::dynamic_bitset<> const& bitmask_params) noexcept
+  auto informational_criteria(
+      RangeT const& samples, boost::dynamic_bitset<> const& bitmask_samples,
+      boost::dynamic_bitset<> const& bitmask_params) noexcept
   {
     using underneeth_sample_type
         = std::iter_value_t<std::ranges::iterator_t<RangeT>>;
@@ -253,7 +258,7 @@ namespace datamining_lab1::decision_trees
                                 decltype(std::declval<std::iter_value_t<
                                              std::ranges::iterator_t<RangeT>>>()
                                              .getExpectedResult())>,
-                            std::size_t>>> const& tables)  noexcept
+                            std::size_t>>> const& tables) noexcept
       -> std::unique_ptr<INode<
           decltype(std::declval<
                        std::iter_value_t<std::ranges::iterator_t<RangeT>>>()
@@ -284,13 +289,13 @@ namespace datamining_lab1::decision_trees
           index = bitmask_samples.find_next(index);
         }
     }
-    std::println("is case 1 ?: {} , size: {} count_first: {}",
+    fmt::println("is case 1 ?: {} , size: {} count_first: {}",
                  *all_uniqueS.cbegin(), all_uniqueS.size(),
                  all_uniqueS.count(*all_uniqueS.cbegin()));
 
     if (all_uniqueS.size() == all_uniqueS.count(*all_uniqueS.cbegin()))
       {
-        std::println("case 1: {} , size: {} count_first: {}",
+        fmt::println("case 1: {} , size: {} count_first: {}",
                      *all_uniqueS.cbegin(), all_uniqueS.size(),
                      all_uniqueS.count(*all_uniqueS.cbegin()));
         return static_cast<std::unique_ptr<INode<
@@ -312,7 +317,7 @@ namespace datamining_lab1::decision_trees
                 return std::max(all_uniqueS.count(a_result_1),
                                 all_uniqueS.count(a_result_2));
               });
-          std::println("case 2: {}", *it_element_with_max_count);
+          fmt::println("case 2: {}", *it_element_with_max_count);
           return static_cast<std::unique_ptr<INode<
               underneeth_data_collection, underneeth_expected_result_type>>>(
               std::make_unique<JustResult<underneeth_data_collection,
@@ -333,7 +338,7 @@ namespace datamining_lab1::decision_trees
          map_param_val_to_struct_map_result_val_to_counts_and_sum_of_all_counts]
         = selected_shit;
 
-    std::println("case 3: param index: {}", selected_param);
+    fmt::println("case 3: param index: {}", selected_param);
 
     std::map<underneeth_data_type,
              std::unique_ptr<INode<underneeth_data_collection,
@@ -356,12 +361,12 @@ namespace datamining_lab1::decision_trees
             std::size_t index = bitmask_samples.find_first();
             while (index != boost::dynamic_bitset<>::npos)
               {
-                // std::println("index: {} , param_val: {} , sample_param_val:
+                // fmt::println("index: {} , param_val: {} , sample_param_val:
                 // {}",index,param_val,samples.at(index).getValue().at(selected_param));
                 if (samples.at(index).getValue().at(selected_param)
                     == param_val)
                   {
-                    // std::println("setting at index {} true",index);
+                    // fmt::println("setting at index {} true",index);
                     filtered_bitmask_samples[index] = true;
                   }
 
@@ -373,7 +378,7 @@ namespace datamining_lab1::decision_trees
             boost::to_string(filtered_bitmask_params, bitmask_params_str);
             boost::to_string(filtered_bitmask_samples, bitmask_samples_str);
 
-            std::println(
+            fmt::println(
                 "case 3.2: param_index {} , param value: {} , bitmask_samples: "
                 "{} , "
                 "bitmask_params: {}",
@@ -391,7 +396,7 @@ namespace datamining_lab1::decision_trees
                   return std::max(all_uniqueS.count(a_result1),
                                   all_uniqueS.count(a_result2));
                 });
-            std::println(
+            fmt::println(
                 "case 3.1: param_index {} , param value: {} element: {}",
                 selected_param, param_val, *it_element_with_max_count);
             tree[param_val] = static_cast<std::unique_ptr<INode<
@@ -410,7 +415,7 @@ namespace datamining_lab1::decision_trees
   }
 
   template <std::ranges::bidirectional_range RangeT> [[nodiscard]] inline auto
-  create_model(RangeT const & a_range) noexcept(false) -> std::unique_ptr<
+  create_model(RangeT const& a_range) noexcept(false) -> std::unique_ptr<
       INode<decltype(std::declval<
                          std::iter_value_t<std::ranges::iterator_t<RangeT>>>()
                          .getValue()),
@@ -485,11 +490,11 @@ namespace datamining_lab1::decision_trees
           {
             for (const auto& [column_key, count] : row_map)
               {
-                std::print("{} ", count);
+                fmt::print("{} ", count);
               }
-            std::println("");
+            fmt::println("");
           }
-        std::println("");
+        fmt::println("");
       }
 
     boost::dynamic_bitset<> bitmask_samples(a_range.size());

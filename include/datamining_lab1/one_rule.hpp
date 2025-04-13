@@ -7,7 +7,6 @@
 #include <cstddef>
 #include <iterator>
 #include <map>
-#include <print>
 #include <ranges>
 #include <vector>
 #include <type_traits>
@@ -139,11 +138,11 @@ namespace datamining_lab1::one_rule
           {
             for (const auto& [column_key, count] : row_map)
               {
-                std::print("{} ", count);
+                fmt::print("{} ", count);
               }
-            std::println("");
+            fmt::println("");
           }
-        std::println("");
+        fmt::println("");
       }
 
     std::vector<std::size_t> error_of_table(amount_of_parameters, 0);
