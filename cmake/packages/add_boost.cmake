@@ -1,1 +1,2 @@
-find_package(AddBoost.cmake 3.7.1 REQUIRED)
+include(${CMAKE_CURRENT_LIST_DIR}/../getCPM.cmake)
+CPMAddPackage(NAME AddBoost.cmake VERSION 3.7.2 URL "https://github.com/Arniiiii/AddBoost.cmake/archive/refs/tags/3.7.2.tar.gz")
