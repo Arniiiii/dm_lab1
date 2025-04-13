@@ -2,6 +2,7 @@
 
 #include <array>
 #include <type_traits>
+
 enum class test_result_enum : bool
 {
   success = false,
@@ -21,7 +22,7 @@ struct test_sample
 };
 
 // jff
-static_assert(std::is_standard_layout_v<test_sample>, "It's not POD ?");
+static_assert(std::is_standard_layout_v<test_sample>, "It's not a C struct?");
 
 constexpr auto data = std::to_array<test_sample>({
     {.value = {{0, 0, 1, 0}}, .result = 0},

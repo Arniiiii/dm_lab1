@@ -1,4 +1,6 @@
 #include <array>
+#include <exception>
+#include <iostream>
 #include <print>
 
 #include "datamining_lab1/one_rule.hpp"
@@ -27,6 +29,6 @@ int main(int /*argc*/, char* /*argv*/[])
     }
   catch (std::exception& e)
     {
-      std::println("Main, got exception: {}", e.what());
+      std::println(std::cerr, "Main, got exception: {}", e.what());
     }
 }

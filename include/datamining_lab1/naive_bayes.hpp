@@ -14,6 +14,11 @@
 
 namespace datamining_lab1::naive_bayes
 {
+  constexpr double REDUCING_FACTOR = 0.25;
+
+  static_assert(0.0 < REDUCING_FACTOR && REDUCING_FACTOR < 1.0,
+                "It's not a reducing factor.");
+
   template <typename data_type, typename result_type,
             typename float_type = float>
   class model
@@ -23,7 +28,7 @@ namespace datamining_lab1::naive_bayes
     std::map<result_type, float_type> main_probability_;
 
   public:
-    [[nodiscard]] inline constexpr result_type predict(
+    [[nodiscard]] constexpr result_type predict(
         auto const& value_collection) const
       requires std::same_as<
                    typename std::iterator_traits<
@@ -156,14 +161,14 @@ namespace datamining_lab1::naive_bayes
       }
 
     std::vector<std::map<underneeth_data_type,
-                         std::map<underneeth_expected_result_type, float>>>
+                         std::map<underneeth_expected_result_type, double>>>
         tables_likelihoods_(tables.size());
-    std::map<underneeth_expected_result_type, float> main_probability_;
+    std::map<underneeth_expected_result_type, double> main_probability_;
 
     for (const auto& [a_result, count] : unique_results)
       {
         main_probability_[a_result]
-            = static_cast<float>(count) / static_cast<float>(a_range.size());
+            = static_cast<double>(count) / static_cast<double>(a_range.size());
       }
 
     for (std::size_t param_index = 0; param_index < tables.size();
@@ -186,13 +191,13 @@ namespace datamining_lab1::naive_bayes
                   }
               }
 
-            std::map<underneeth_data_type, float> likelihoods;
+            std::map<underneeth_data_type, double> likelihoods;
 
             for (const auto& [param, count] : counts_state_for_param)
               {
                 tables_likelihoods_[param_index][param][a_result]
-                    = static_cast<float>(count)
-                      / static_cast<float>(
+                    = static_cast<double>(count)
+                      / static_cast<double>(
                           overall_count_of_the_state_for_the_param);
               }
 
@@ -201,29 +206,30 @@ namespace datamining_lab1::naive_bayes
                 // doing additive smoothing.
 
                 // it's too much if try to do via std::algorihtms
-                float min_probabilty = 1;
+                double min_probabilty = 1;
                 for (const auto& [param, map_result_likelihood] :
                      tables_likelihoods_[param_index])
                   {
-                    float likelihood = map_result_likelihood.at(a_result);
-                    if (likelihood != 0.0F && likelihood < min_probabilty)
+                    double likelihood = map_result_likelihood.at(a_result);
+                    if (likelihood != 0.0 && likelihood < min_probabilty)
                       {
                         min_probabilty = likelihood;
                       }
                   }
 
                 // by a book: this has to be lesser than minimal probability
-                float alpha_for_additive_smoothing = 0.25F * min_probabilty;
+                double alpha_for_additive_smoothing
+                    = REDUCING_FACTOR * min_probabilty;
 
                 for (const auto& [param, count] : counts_state_for_param)
                   {
                     tables_likelihoods_[param_index][param][a_result]
-                        = (static_cast<float>(count)
+                        = (static_cast<double>(count)
                            + alpha_for_additive_smoothing)
-                          / (static_cast<float>(
+                          / (static_cast<double>(
                                  overall_count_of_the_state_for_the_param)
                              + alpha_for_additive_smoothing
-                                   * static_cast<float>(
+                                   * static_cast<double>(
                                        counts_state_for_param.size()));
                   }
               }

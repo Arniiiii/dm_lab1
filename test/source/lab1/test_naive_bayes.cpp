@@ -1,4 +1,6 @@
+#include <array>
 #include <exception>
+#include <iostream>
 #include <print>
 
 #include "datamining_lab1/naive_bayes.hpp"
@@ -6,7 +8,7 @@
 
 namespace
 {
-  test_result_enum naive_bayes_test()
+  test_result_enum naive_bayes_test() noexcept(false)
   {
     auto model = datamining_lab1::naive_bayes::create_model(data);
     // auto main_table = model.getPosition();
@@ -24,6 +26,6 @@ int main(int /*argc*/, char* /*argv*/[])
     }
   catch (std::exception& e)
     {
-      std::println("Main, got exception: {}", e.what());
+      std::println(std::cerr, "Main, got exception: {}", e.what());
     }
 }

@@ -12,6 +12,10 @@
 #include <vector>
 #include <type_traits>
 
+// we need this because gcc at the moment doesn't support Formatting Ranges
+#include "fmt/base.h"
+#include "fmt/ranges.h"
+
 #include "datamining_lab1/common.hpp"
 
 namespace datamining_lab1::one_rule
@@ -23,7 +27,7 @@ namespace datamining_lab1::one_rule
     std::map<data_type, result_type> valueable_data_;
 
   public:
-    [[nodiscard]] inline constexpr result_type predict(
+    [[nodiscard]] constexpr result_type predict(
         auto const& value_collection) const
       requires std::same_as<
                    typename std::iterator_traits<
@@ -37,17 +41,21 @@ namespace datamining_lab1::one_rule
       //   {
       //     return {};
       //   };
-      return valueable_data_.at(
-          *std::next(value_collection.cbegin(), position));
+      return valueable_data_.at(*std::next(
+          value_collection.cbegin(), static_cast<std::ptrdiff_t>(position)));
     }
 
-    model(std::size_t position, std::map<data_type, result_type> valueable_data)
-        : position(position), valueable_data_(std::move(valueable_data))
+    model(std::size_t position_arg,
+          std::map<data_type, result_type> valueable_data) noexcept
+        : position(position_arg), valueable_data_(std::move(valueable_data))
     {
     }
 
-    [[nodiscard]] constexpr auto getPosition() const { return position; }
-    [[nodiscard]] constexpr const auto& getValuableData() const
+    [[nodiscard]] constexpr auto getPosition() const noexcept
+    {
+      return position;
+    }
+    [[nodiscard]] constexpr const auto& getValuableData() const noexcept
     {
       return valueable_data_;
     }
@@ -160,11 +168,10 @@ namespace datamining_lab1::one_rule
           }
       }
 
-    std::size_t best_table_index = std::distance(
-        error_of_table.cbegin(),
-        std::min_element(error_of_table.cbegin(), error_of_table.cend()));
+    auto best_table_index = static_cast<std::size_t>(std::ranges::distance(
+        error_of_table.cbegin(), std::ranges::min_element(error_of_table)));
 
-    std::println(
+    fmt::println(
         "error_of_table: {} , best_table_index: {} , amount_of_parameters {}",
         error_of_table, best_table_index, amount_of_parameters);
 

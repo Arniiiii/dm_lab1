@@ -1,9 +1,14 @@
+#include <array>
+#include <exception>
+#include <iostream>
+#include <print>
+
 #include "datamining_lab1/decision_trees.hpp"
 #include "datamining_lab1/test/common.hpp"
 
 namespace
 {
-  test_result_enum test_decision_trees()
+  test_result_enum test_decision_trees() noexcept(false)
   {
     auto model = datamining_lab1::decision_trees::create_model(data);
     model->print();
@@ -16,5 +21,12 @@ namespace
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-  return static_cast<int>(test_decision_trees());
+  try
+    {
+      return static_cast<int>(test_decision_trees());
+    }
+  catch (std::exception& e)
+    {
+      std::println(std::cerr, "Main, got exception: {}", e.what());
+    }
 }

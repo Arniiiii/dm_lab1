@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
-#include <format>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -17,7 +16,7 @@
 #include <vector>
 #include <type_traits>
 
-#include "boost/dynamic_bitset.hpp"
+#include "boost/dynamic_bitset/dynamic_bitset.hpp"
 #include "datamining_lab1/common.hpp"
 
 namespace datamining_lab1::decision_trees
@@ -33,8 +32,8 @@ namespace datamining_lab1::decision_trees
     INode& operator=(INode&&) = delete;
     INode() = default;
     virtual ~INode() = default;
-    virtual ResultType predict(SampleT const&) = 0;
-    virtual void print() = 0;
+    virtual ResultType predict(SampleT const&) noexcept = 0;
+    virtual void print() noexcept = 0;
   };
 
   template <std::ranges::bidirectional_range SampleT, typename ResultType>
@@ -50,8 +49,8 @@ namespace datamining_lab1::decision_trees
     ~JustResult() = default;
 
     explicit JustResult(ResultType result_arg) : result(result_arg) {};
-    ResultType predict(SampleT const& /*unused*/) override { return result; }
-    void print() override { std::print("res {} ", result); }
+    ResultType predict(SampleT const& /*unused*/) noexcept override { return result; }
+    void print() noexcept override { std::print("res {} ", result); }
   };
 
   template <std::ranges::bidirectional_range SampleT, typename ResultType>
@@ -77,11 +76,11 @@ namespace datamining_lab1::decision_trees
                       a_tree_map,
                   std::size_t a_position)
         : tree(std::move(a_tree_map)), position(a_position) {};
-    ResultType predict(SampleT const& sample) override
+    ResultType predict(SampleT const& sample) noexcept override 
     {
       return tree.at(sample.at(position))->predict(sample);
     }
-    void print() override
+    void print() noexcept override
     {
       std::print("tree param index: {} ", position);
       for (auto const& [key, val] : tree)
@@ -94,7 +93,7 @@ namespace datamining_lab1::decision_trees
 
   template <typename map_key_type> double informational_entropy(
       std::map<map_key_type, std::size_t> const& count_of_results,
-      std::size_t amount_of_samples)
+      std::size_t amount_of_samples) noexcept
   {
     double result = 0;
 
@@ -109,7 +108,7 @@ namespace datamining_lab1::decision_trees
   }
 
   template <typename map_key_type> double informational_entropy(
-      std::map<map_key_type, std::size_t> const& count_of_results)
+      std::map<map_key_type, std::size_t> const& count_of_results) noexcept
   {
     std::size_t amount_of_samples
         = std::accumulate(count_of_results.cbegin(), count_of_results.cend(), 0,
@@ -122,7 +121,7 @@ namespace datamining_lab1::decision_trees
 
   template <std::ranges::bidirectional_range RangeT>
   double informational_entropy(RangeT const& samples,
-                               boost::dynamic_bitset<> const& bitmask_samples)
+                               boost::dynamic_bitset<> const& bitmask_samples) noexcept
   {
     using underneeth_sample_type
         = std::iter_value_t<std::ranges::iterator_t<RangeT>>;
@@ -153,7 +152,7 @@ namespace datamining_lab1::decision_trees
   template <std::ranges::bidirectional_range RangeT>
   auto informational_criteria(RangeT const& samples,
                               boost::dynamic_bitset<> const& bitmask_samples,
-                              boost::dynamic_bitset<> const& bitmask_params)
+                              boost::dynamic_bitset<> const& bitmask_params) noexcept
   {
     using underneeth_sample_type
         = std::iter_value_t<std::ranges::iterator_t<RangeT>>;
@@ -254,7 +253,7 @@ namespace datamining_lab1::decision_trees
                                 decltype(std::declval<std::iter_value_t<
                                              std::ranges::iterator_t<RangeT>>>()
                                              .getExpectedResult())>,
-                            std::size_t>>> const& tables)
+                            std::size_t>>> const& tables)  noexcept
       -> std::unique_ptr<INode<
           decltype(std::declval<
                        std::iter_value_t<std::ranges::iterator_t<RangeT>>>()

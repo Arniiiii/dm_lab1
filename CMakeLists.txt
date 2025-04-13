@@ -76,9 +76,9 @@ set(TRY_BOOST_VERSION "1.85.0")
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/packages/add_boost.cmake)
 
-# include(./cmake/packages/add_fmt.cmake)
-#
-# target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+include(./cmake/packages/add_fmt.cmake)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
 # include(./cmake/packages/add_certify.cmake)
 #
@@ -86,9 +86,8 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/packages/add_boost.cmake)
 
 # include(./cmake/packages/add_openssl.cmake)
 #
-# target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::SSL)
-# target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto)
-# target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::applink)
+# target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::SSL) target_link_libraries(${PROJECT_NAME}
+# PUBLIC OpenSSL::Crypto) target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::applink)
 
 # include(./cmake/packages/add_simdjson.cmake)
 #
@@ -105,6 +104,9 @@ set_project_lto_opts(${PROJECT_NAME})
 
 include(./cmake/optimization_flags/polyhedral.cmake)
 set_project_polyhedral_opts(${PROJECT_NAME})
+
+include(./cmake/warning.cmake)
+set_project_warnings(${PROJECT_NAME})
 
 # ---- Create an installable target ----
 # this allows users to install and find the library via `find_package()`.
