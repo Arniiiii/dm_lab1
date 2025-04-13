@@ -71,11 +71,13 @@ endif()
 include(cmake/getCPM.cmake)
 
 set(TRY_BOOST_VERSION "1.85.0")
-# set(BOOST_NOT_HEADER_ONLY_COMPONENTS_THAT_YOU_NEED "thread;filesystem;system")
-# set(BOOST_HEADER_ONLY_COMPONENTS_THAT_YOU_NEED "asio;beast;cobalt;core;date_time;container")
+set(BOOST_NOT_HEADER_ONLY_COMPONENTS_THAT_YOU_NEED "")
+set(BOOST_HEADER_ONLY_COMPONENTS_THAT_YOU_NEED "dynamic_bitset;math")
 # set(BOOST_MY_OPTIONS "BOOST_ENABLE_PYTHON ON;")
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/packages/add_boost.cmake)
+
+add_boost(TRY_BOOST_VERSION BOOST_HEADER_ONLY_COMPONENTS_THAT_YOU_NEED BOOST_NOT_HEADER_ONLY_COMPONENTS_THAT_YOU_NEED ${PROJECT_NAME})
 
 include(./cmake/packages/add_fmt.cmake)
 
