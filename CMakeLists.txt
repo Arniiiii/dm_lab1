@@ -41,22 +41,23 @@ endif()
 # Note: globbing sources is considered bad practice as CMake's generators may not detect new files
 # automatically. Keep that in mind when changing files, or explicitly mention them here.
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp")
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
+# file(GLOB_RECURSE sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
 
 # ---- Create library ----
 
 # Note: for header-only libraries change all PUBLIC flags to INTERFACE and create an interface
-# target: add_library(${PROJECT_NAME} INTERFACE)
-add_library(${PROJECT_NAME} ${headers} ${sources})
+# target: add_library(${PROJECT_NAME} INTERFACE) add_library(${PROJECT_NAME} ${headers} ${sources})
+add_library(${PROJECT_NAME} INTERFACE)
+set(${PROJECT_NAME}_BUILD_HEADERS_ONLY TRUE)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23)
 
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-                         $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+  ${PROJECT_NAME} INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                            $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 
 # being a cross-platform target, we enforce standards conformance on MSVC
-target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
+# target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 
 if(CMAKE_BUILD_TYPE STREQUAL Debug)
   if(GNU)
@@ -78,7 +79,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/packages/add_boost.cmake)
 
 include(./cmake/packages/add_fmt.cmake)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+target_link_libraries(${PROJECT_NAME} INTERFACE fmt::fmt)
 
 # include(./cmake/packages/add_certify.cmake)
 #
@@ -105,9 +106,6 @@ set_project_lto_opts(${PROJECT_NAME})
 include(./cmake/optimization_flags/polyhedral.cmake)
 set_project_polyhedral_opts(${PROJECT_NAME})
 
-include(./cmake/warning.cmake)
-set_project_warnings(${PROJECT_NAME})
-
 # ---- Create an installable target ----
 # this allows users to install and find the library via `find_package()`.
 
@@ -132,20 +130,13 @@ packageProject(
   COMPATIBILITY "AnyNewerVersion" DISABLE_VERSION_SUFFIX ON
   # cmake-format:off DO *NOT* divide this like to different lines. It will destroy a lot of stuff
   # related to making this project not only installable, but usable via `find_package(the_project)`
-  DEPENDENCIES
-    "${ADDBOOSTCMAKE_PACKAGEPROJECT_INSTALL_TARGETS};certify ${certify_VERSION};OpenSSL 3.0;simdjson ${simdjson_VERSION};constexpr-to-string ${constexpr-to-string_VERSION}"
+  DEPENDENCIES "${ADDBOOSTCMAKE_PACKAGEPROJECT_INSTALL_TARGETS};"
   # cmake-format:on
 )
 
-if(${${PROJECT_NAME}_BUILD_STANDALONE})
-  add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/standalone)
-endif()
-
 if(BUILD_TESTING)
+  include(./cmake/warning.cmake)
+  set_project_warnings(${PROJECT_NAME})
   enable_testing()
   add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
-endif()
-
-if(${${PROJECT_NAME}_BUILD_DOCS})
-  add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/documentation)
 endif()
