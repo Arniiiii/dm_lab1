@@ -28,10 +28,10 @@ jobs:
           key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
 
       - name: configure
-        run: cmake -S. -Bbuild -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS="-ggdb3" -DBUILD_SHARED_LIBS=1 --log-level=DEBUG -DFETCHCONTENT_QUIET=OFF
+        run: cmake -S. -Bbuild -DBUILD_TESTING=1 -DCMAKE_CXX_FLAGS="-ggdb3" -DBUILD_SHARED_LIBS=1 --log-level=DEBUG -DFETCHCONTENT_QUIET=OFF -DCPM_USE_LOCAL_PACKAGES=1
 
       - name: build
-        run: cmake --build build -j$(nproc)
+        run: cmake --build build -j$(nproc) --verbose
 
       - name: test
         run: |
