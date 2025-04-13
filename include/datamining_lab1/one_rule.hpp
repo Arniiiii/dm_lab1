@@ -62,7 +62,7 @@ namespace datamining_lab1::one_rule
   };
 
   // additional deduction guide...
-  template <std::ranges::bidirectional_range RangeT> model(RangeT range)
+  template <std::ranges::bidirectional_range RangeT> model(RangeT const& range)
       -> model<typename decltype(std::declval<std::iter_value_t<
                                      std::ranges::iterator_t<RangeT>>>()
                                      .getValue())::value_type,

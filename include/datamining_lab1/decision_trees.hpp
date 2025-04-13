@@ -410,7 +410,7 @@ namespace datamining_lab1::decision_trees
   }
 
   template <std::ranges::bidirectional_range RangeT> [[nodiscard]] inline auto
-  create_model(RangeT a_range) noexcept(false) -> std::unique_ptr<
+  create_model(RangeT const & a_range) noexcept(false) -> std::unique_ptr<
       INode<decltype(std::declval<
                          std::iter_value_t<std::ranges::iterator_t<RangeT>>>()
                          .getValue()),

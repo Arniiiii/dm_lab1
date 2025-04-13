@@ -84,7 +84,7 @@ namespace datamining_lab1::naive_bayes
   };
 
   template <std::ranges::bidirectional_range RangeT>
-  [[nodiscard]] inline auto create_model(RangeT a_range) noexcept(false)
+  [[nodiscard]] inline auto create_model(RangeT const& a_range) noexcept(false)
     requires Con_HasgetValueReturnsRange<
                  std::iter_value_t<std::ranges::iterator_t<RangeT>>>
              and Con_HasgetExpectedResult<
