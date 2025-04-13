@@ -37,5 +37,9 @@ jobs:
         run: |
           ctest --test-dir ./build -j $(nproc) --verbose
 
+      - name: install
+        run: |
+          cmake --install ./build --prefix ./install_dir
+
       # - name: collect code coverage
       #   run: bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
