@@ -1,5 +1,5 @@
 function(set_project_polyhedral_opts project_name)
-  if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+  if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     message(
       AUTHOR_WARNING
         "The project ${PROJECT_NAME} is building in debug mode, thus no compiler flags for polyhedral optimization were added."
